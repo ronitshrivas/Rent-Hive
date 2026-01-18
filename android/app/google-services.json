@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "122532894782",
+    "project_id": "message-7d3c5",
+    "storage_bucket": "message-7d3c5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:122532894782:android:6ef6bcd3b70a6dfd08d96f",
+        "android_client_info": {
+          "package_name": "com.example.renthive"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBwOvyfIMfIhK0dUfqKhvhZBNt9TcfA3-c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
