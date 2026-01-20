@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:lottie/lottie.dart';
+import 'package:renthive/admin/screen/admin_login_screen.dart';
 import '../providers/auth_provider.dart';
 import '../utils/app_colors.dart';
 import 'auth/auth_wrapper.dart';
@@ -32,38 +33,40 @@ class _SplashScreenState extends State<SplashScreen>
       vsync: this,
     );
 
-    _fadeAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: const Interval(0.0, 0.6, curve: Curves.easeOut),
-    ));
+    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _animationController,
+        curve: const Interval(0.0, 0.6, curve: Curves.easeOut),
+      ),
+    );
 
     _slideAnimation = Tween<Offset>(
       begin: const Offset(0, 0.3),
       end: Offset.zero,
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: const Interval(0.3, 1.0, curve: Curves.easeOut),
-    ));
+    ).animate(
+      CurvedAnimation(
+        parent: _animationController,
+        curve: const Interval(0.3, 1.0, curve: Curves.easeOut),
+      ),
+    );
 
     _animationController.forward();
   }
 
   Future<void> _navigateToNextScreen() async {
     await Future.delayed(const Duration(milliseconds: 3000));
-    
+
     if (!mounted) return;
 
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
-    
+
     Navigator.of(context).pushReplacement(
       PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) =>
-            authProvider.isAuthenticated 
-                ? const MainNavigation()
-                : const AuthWrapper(),
+        pageBuilder:
+            (context, animation, secondaryAnimation) =>
+                authProvider.isAuthenticated
+                    ? const AdminLoginScreen()
+                    : const AuthWrapper(),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           return FadeTransition(opacity: animation, child: child);
         },
@@ -82,15 +85,13 @@ class _SplashScreenState extends State<SplashScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(
-          gradient: AppColors.primaryGradient,
-        ),
+        decoration: const BoxDecoration(gradient: AppColors.primaryGradient),
         child: SafeArea(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Spacer(),
-              
+
               // Logo and Animation
               FadeTransition(
                 opacity: _fadeAnimation,
@@ -119,9 +120,9 @@ class _SplashScreenState extends State<SplashScreen>
                           color: AppColors.primaryColor,
                         ),
                       ),
-                      
+
                       const SizedBox(height: 24),
-                      
+
                       // App Name
                       const Text(
                         'Rent Hive',
@@ -132,9 +133,9 @@ class _SplashScreenState extends State<SplashScreen>
                           letterSpacing: 1.2,
                         ),
                       ),
-                      
+
                       const SizedBox(height: 8),
-                      
+
                       // Tagline
                       const Text(
                         'Find Your Perfect Space',
@@ -148,9 +149,9 @@ class _SplashScreenState extends State<SplashScreen>
                   ),
                 ),
               ),
-              
+
               const Spacer(),
-              
+
               // Loading Animation
               FadeTransition(
                 opacity: _fadeAnimation,
@@ -166,20 +167,17 @@ class _SplashScreenState extends State<SplashScreen>
                         strokeWidth: 3,
                       ),
                     ),
-                    
+
                     const SizedBox(height: 16),
-                    
+
                     const Text(
                       'Loading...',
-                      style: TextStyle(
-                        color: Colors.white70,
-                        fontSize: 14,
-                      ),
+                      style: TextStyle(color: Colors.white70, fontSize: 14),
                     ),
                   ],
                 ),
               ),
-              
+
               const SizedBox(height: 60),
             ],
           ),
@@ -219,10 +217,7 @@ class _RentHiveLoaderState extends State<RentHiveLoader>
     _animation = Tween<double>(
       begin: 0,
       end: 1,
-    ).animate(CurvedAnimation(
-      parent: _controller,
-      curve: Curves.easeInOut,
-    ));
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
     _controller.repeat();
   }
 
@@ -264,10 +259,7 @@ class _RentHiveLoaderState extends State<RentHiveLoader>
                   height: widget.size * 0.7,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    border: Border.all(
-                      color: widget.color,
-                      width: 3,
-                    ),
+                    border: Border.all(color: widget.color, width: 3),
                   ),
                 ),
               ),

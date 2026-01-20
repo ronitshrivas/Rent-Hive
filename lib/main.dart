@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:renthive/admin/providers/admin_provider.dart';
 import 'package:renthive/services/notification_services.dart';
 import 'providers/auth_provider.dart';
 import 'providers/property_provider.dart';
@@ -37,6 +38,7 @@ class RentHiveApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => PropertyProvider()),
         ChangeNotifierProvider(create: (_) => ChatProvider()),
         ChangeNotifierProvider(create: (_) => LocationProvider()),
+        ChangeNotifierProvider(create: (_) => AdminProvider()),
       ],
       child: MaterialApp(
         title: 'Rent Hive',

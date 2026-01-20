@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:renthive/admin/screen/admin_login_screen.dart';
 import 'package:renthive/screens/auth/onbarding_screen.dart';
 import '../../providers/auth_provider.dart';
 import '../main_navigation.dart';
@@ -13,14 +14,12 @@ class AuthWrapper extends StatelessWidget {
       builder: (context, authProvider, child) {
         if (authProvider.isLoading) {
           return const Scaffold(
-            body: Center(
-              child: CircularProgressIndicator(),
-            ),
+            body: Center(child: CircularProgressIndicator()),
           );
         }
 
         if (authProvider.isAuthenticated) {
-          return const MainNavigation();
+          return const AdminLoginScreen();
         }
 
         return const OnboardingScreen();
