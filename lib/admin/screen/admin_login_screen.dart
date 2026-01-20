@@ -228,7 +228,7 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
                       // Footer
                       const SizedBox(height: 24),
                       Text(
-                        '© 2024 RentHive. All rights reserved.',
+                        '© 2026 RentHive. All rights reserved.',
                         style: TextStyle(fontSize: 12, color: Colors.grey[600]),
                       ),
                     ],

@@ -13,13 +13,14 @@ class AdminPropertiesScreen extends StatefulWidget {
 
 class _AdminPropertiesScreenState extends State<AdminPropertiesScreen> {
   final TextEditingController _searchController = TextEditingController();
-  List<PropertyModel> _filteredProperties = [];
   String _filter = 'all';
 
   @override
   void initState() {
     super.initState();
-    _searchController.addListener(_filterProperties);
+    _searchController.addListener(() {
+      setState(() {});
+    });
   }
 
   @override
@@ -28,37 +29,25 @@ class _AdminPropertiesScreenState extends State<AdminPropertiesScreen> {
     super.dispose();
   }
 
-  void _filterProperties() {
-    final provider = Provider.of<AdminProvider>(context, listen: false);
+  List<PropertyModel> _getFilteredProperties(AdminProvider provider) {
     final query = _searchController.text;
+    List<PropertyModel> filtered = provider.searchProperties(query);
 
-    setState(() {
-      _filteredProperties = provider.searchProperties(query);
+    // Apply availability filter
+    if (_filter == 'available') {
+      filtered = filtered.where((property) => property.isAvailable).toList();
+    } else if (_filter == 'rented') {
+      filtered = filtered.where((property) => !property.isAvailable).toList();
+    }
 
-      // Apply availability filter
-      if (_filter == 'available') {
-        _filteredProperties =
-            _filteredProperties
-                .where((property) => property.isAvailable)
-                .toList();
-      } else if (_filter == 'rented') {
-        _filteredProperties =
-            _filteredProperties
-                .where((property) => !property.isAvailable)
-                .toList();
-      }
-    });
+    return filtered;
   }
 
   @override
   Widget build(BuildContext context) {
     return Consumer<AdminProvider>(
       builder: (context, provider, child) {
-        if (_filteredProperties.isEmpty && _searchController.text.isEmpty) {
-          _filteredProperties = provider.allProperties;
-          _filterProperties();
-        }
-
+        final filteredProperties = _getFilteredProperties(provider);
         final availableCount =
             provider.allProperties.where((p) => p.isAvailable).length;
         final rentedCount = provider.allProperties.length - availableCount;
@@ -84,7 +73,6 @@ class _AdminPropertiesScreenState extends State<AdminPropertiesScreen> {
                                     icon: const Icon(Icons.clear),
                                     onPressed: () {
                                       _searchController.clear();
-                                      _filterProperties();
                                     },
                                   )
                                   : null,
@@ -123,7 +111,6 @@ class _AdminPropertiesScreenState extends State<AdminPropertiesScreen> {
                           onChanged: (value) {
                             setState(() {
                               _filter = value!;
-                              _filterProperties();
                             });
                           },
                         ),
@@ -168,7 +155,7 @@ class _AdminPropertiesScreenState extends State<AdminPropertiesScreen> {
                 child:
                     provider.isLoading
                         ? const Center(child: CircularProgressIndicator())
-                        : _filteredProperties.isEmpty
+                        : filteredProperties.isEmpty
                         ? Center(
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -192,9 +179,9 @@ class _AdminPropertiesScreenState extends State<AdminPropertiesScreen> {
                         : RefreshIndicator(
                           onRefresh: () => _refreshProperties(provider),
                           child: ListView.builder(
-                            itemCount: _filteredProperties.length,
+                            itemCount: filteredProperties.length,
                             itemBuilder: (context, index) {
-                              final property = _filteredProperties[index];
+                              final property = filteredProperties[index];
                               final owner = provider.allUsers.firstWhere(
                                 (user) => user.id == property.ownerId,
                                 orElse:
@@ -535,10 +522,6 @@ class _AdminPropertiesScreenState extends State<AdminPropertiesScreen> {
             backgroundColor: success ? Colors.green : Colors.red,
           ),
         );
-
-        if (success) {
-          _filterProperties();
-        }
       }
     }
   }
@@ -583,17 +566,12 @@ class _AdminPropertiesScreenState extends State<AdminPropertiesScreen> {
             backgroundColor: success ? Colors.green : Colors.red,
           ),
         );
-
-        if (success) {
-          _filterProperties();
-        }
       }
     }
   }
 
   Future<void> _refreshProperties(AdminProvider provider) async {
     await provider.refreshProperties();
-    _filterProperties();
 
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(

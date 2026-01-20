@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:renthive/admin/screen/admin_login_screen.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../../utils/app_colors.dart';
 import '../../widgets/custom_button.dart';
@@ -18,25 +19,29 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   final List<OnboardingData> _onboardingData = [
     OnboardingData(
       title: 'Find Your Perfect Room',
-      description: 'Discover amazing rooms, hostels, and accommodations near you with advanced search filters',
+      description:
+          'Discover amazing rooms, hostels, and accommodations near you with advanced search filters',
       icon: Icons.search_rounded,
       color: AppColors.primaryColor,
     ),
     OnboardingData(
       title: 'Virtual Room Tours',
-      description: 'Take virtual tours of properties from the comfort of your home with our AR technology',
+      description:
+          'Take virtual tours of properties from the comfort of your home with our AR technology',
       icon: Icons.view_in_ar_rounded,
       color: AppColors.secondaryColor,
     ),
     OnboardingData(
       title: 'Chat & Connect',
-      description: 'Connect directly with property owners through our secure messaging system',
+      description:
+          'Connect directly with property owners through our secure messaging system',
       icon: Icons.chat_bubble_rounded,
       color: AppColors.primaryColor,
     ),
     OnboardingData(
       title: 'Rate & Review',
-      description: 'Share your experiences and read reviews from other tenants to make informed decisions',
+      description:
+          'Share your experiences and read reviews from other tenants to make informed decisions',
       icon: Icons.star_rounded,
       color: AppColors.secondaryColor,
     ),
@@ -117,7 +122,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           child: OutlinedButton(
                             onPressed: _previousPage,
                             style: OutlinedButton.styleFrom(
-                              side: const BorderSide(color: AppColors.primaryColor),
+                              side: const BorderSide(
+                                color: AppColors.primaryColor,
+                              ),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12),
                               ),
@@ -133,18 +140,20 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             ),
                           ),
                         ),
-                      
+
                       if (_currentIndex > 0) const SizedBox(width: 16),
-                      
+
                       Expanded(
                         flex: _currentIndex == 0 ? 1 : 1,
                         child: CustomButton(
-                          text: _currentIndex == _onboardingData.length - 1 
-                              ? 'Get Started' 
-                              : 'Next',
-                          onPressed: _currentIndex == _onboardingData.length - 1 
-                              ? _navigateToLogin 
-                              : _nextPage,
+                          text:
+                              _currentIndex == _onboardingData.length - 1
+                                  ? 'Get Started'
+                                  : 'Next',
+                          onPressed:
+                              _currentIndex == _onboardingData.length - 1
+                                  ? _navigateToLogin
+                                  : _nextPage,
                           gradient: AppColors.primaryGradient,
                         ),
                       ),
@@ -173,11 +182,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               color: data.color.withOpacity(0.1),
               shape: BoxShape.circle,
             ),
-            child: Icon(
-              data.icon,
-              size: 60,
-              color: data.color,
-            ),
+            child: Icon(data.icon, size: 60, color: data.color),
           ),
 
           const SizedBox(height: 48),
@@ -228,13 +233,16 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   void _navigateToLogin() {
     Navigator.of(context).pushReplacement(
       PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) =>
-            const LoginScreen(),
+        pageBuilder:
+            (context, animation, secondaryAnimation) =>
+                const AdminLoginScreen(),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           return SlideTransition(
             position: animation.drive(
-              Tween(begin: const Offset(1.0, 0.0), end: Offset.zero)
-                  .chain(CurveTween(curve: Curves.easeInOut)),
+              Tween(
+                begin: const Offset(1.0, 0.0),
+                end: Offset.zero,
+              ).chain(CurveTween(curve: Curves.easeInOut)),
             ),
             child: child,
           );
